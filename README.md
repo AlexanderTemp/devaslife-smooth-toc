@@ -1,50 +1,73 @@
-# React + TypeScript + Vite
+# Commit conventions
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## cz-git
 
-Currently, two official plugins are available:
+Se recomienda revisar [cz-git](https://cz-git.qbb.sh/guide/), a continuación las instrucciones para instalarlo global
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+npm install -g cz-git commitizen
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+echo '{ "path": "cz-git", "$schema": "https://cdn.jsdelivr.net/gh/Zhengqbbb/cz-git@1.10.1/docs/public/schema/cz-git.json" }' > ~/.czrc
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- Se puede añadir configuración como emojis configurando el archivo ~/.czrc creado en el segundo comando.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+g add .
+g cz
 ```
+
+## husky y commitlint
+
+Se añade una segunda validación del correcto uso de conventional commits.
+
+```
+npm install @commitlint/cli @commitlint/config-conventional --save-dev
+
+touch .commitlintrc.json
+nano .commitlintrc.json
+```
+
+Dentro del archivo configurar de la siguiente manera.
+
+```JSON
+{
+  "extends": ["@commitlint/config-conventional"],
+  "rules": {
+    "header-max-length": [1, "always", 80],
+    "body-max-line-length": [2, "always", 80],
+    "subject-min-length": [2, "always", 5],
+    "type-enum": [
+      2,
+      "always",
+      [
+        "build",
+        "ci",
+        "chore",
+        "docs",
+        "feat",
+        "fix",
+        "perf",
+        "refactor",
+        "revert",
+        "style",
+        "test",
+        "merge"
+      ]
+    ]
+  }
+}
+
+```
+
+Seguido se configura el husky, como sigue:
+
+```
+npx husky init
+echo "npx --no -- commitlint --edit \$1" > .husky/commit-msg
+rm  ./husky/pre-commit
+```
+
+- Con los pasos realizados se tiene un verificador de commits funcional.
+
+![](./docs/husky.png)
