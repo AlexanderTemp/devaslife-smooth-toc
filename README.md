@@ -71,3 +71,13 @@ rm  ./husky/pre-commit
 - Con los pasos realizados se tiene un verificador de commits funcional.
 
 ![](./docs/husky.png)
+
+# Trabajo en el proyecto
+
+```
+bun i framer-motion zustand @kuma-ui/core modern-normalize
+bun i -D @kuma-ui/vite
+bun i -D prettier @ianvs/prettier-plugin-sort-imports
+bun i hast mdast rehype-react rehype-slug remark-frontmatter remark-gfm remark-parse remark-rehype unified unist-util-visit
+bun i yaml
+```
